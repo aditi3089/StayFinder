@@ -12,5 +12,15 @@
     <p>Price: &#8377;<%= item.price.toLocaleString("en-IN") %></p>
     <p>Location: <%= item.location %></p>
     <p>Country: <%= item.country %></p>
+
+    <br>
+    <form action="/listings/<%= item._id %>/edit" method="GET">
+        <button type="submit">EDIT</button>
+    </form>
+    <br><br>
+    <form action="/listings/<%= item._id %>?_method=DELETE" method="POST">
+        <button type="submit">DELETE</button>
+    </form>
+
 </body>
 </html>

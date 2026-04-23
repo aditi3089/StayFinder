@@ -2,7 +2,10 @@ const express= require("express");
 const app=express();
 const mongoose=require("mongoose");
 const Listing=require("./models/listing");
+const methodOverride= require("method-override");
 
+app.use(express.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 //ejs setup
 const path= require("path");
 app.set("views", path.join(__dirname, "views"));
@@ -28,10 +31,38 @@ app.get("/listings", async (req,res)=>{
     res.render("listings/index", {display});
 });
 
+app.get("/listings/new", async(req,res)=>{
+    res.render("listings/new.ejs");
+});
+
 app.get("/listings/:id", async (req, res)=>{
     let {id}= req.params;
     const item= await Listing.findById(id);
     res.render("listings/show.ejs", {item});
+});
+
+app.post("/listings", async (req,res)=>{
+    const newListing= new Listing(req.body);
+    await newListing.save();
+    res.redirect("/listings");
+});
+
+app.get("/listings/:id/edit", async (req,res)=>{
+    let {id}= req.params;
+    const item= await Listing.findById(id);
+    res.render("listings/edit", {item});
+});
+
+app.put("/listings/:id", async (req,res)=>{
+    let {id}= req.params;
+    await Listing.findByIdAndUpdate(id, req.body);
+    res.redirect("/listings");
+});
+
+app.delete("/listings/:id", async (req,res)=>{
+    let {id}= req.params;
+    await Listing.findByIdAndDelete(id);
+    res.redirect("/listings");
 });
 
 // app.get("/testlistings", async (req,res)=>{

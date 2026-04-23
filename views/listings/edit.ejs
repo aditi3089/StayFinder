@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/listings/<%= item._id %>?_method=PUT" method="POST">
+        <input type="text" name="title" placeholder="Title" value="<%= item.title %>">
+        <br>
+        <input type="text" name="description" placeholder="Description" value="<%= item.description %>">
+        <br>
+        <input type="number" name="price" placeholder="Price" value="<%= item.price %>">
+        <br>
+        <input type="text" name="location" placeholder="Location" value="<%= item.location %>">
+        <br>
+        <input type="text" name="country" placeholder="Country" value="<%= item.country %>">
+        <br>
+        <button type="submit">Update Listing</button>
+    </form>
+</body>
+</html>
