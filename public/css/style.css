@@ -1,0 +1,14 @@
+/* *{
+    background-color:aqua;
+} */
+ .navbar{
+    height: 5rem;
+ }
+ .fa-solid{
+    font-size: 2rem;
+    color: #fe424d;
+ }
+ .nav-link{
+   color: black !important;
+ }
+ 
