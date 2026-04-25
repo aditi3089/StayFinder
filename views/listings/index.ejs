@@ -5,9 +5,18 @@
         <button type="submit">ADD</button>
     </form> -->
 
-    <ul>
-       <% for(let i = 0; i < display.length; i++) { %>
-           <li><a href="/listings/<%= display[i]._id %>"><%= display[i].title %></a></li>
-        <% } %>
-    <ul>
+    <!-- card -->
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+<% for(let i = 0; i < display.length; i++) { %>
+<div class="card col" style="width: 20rem;">
+  <img src="<%= display[i].image.url %>" class="card-img-top" alt="listing_image">
+  <div class="card-body">
+    <h5 class="card-title"><%= display[i].title %></h5>
+    <p class="card-price">&#8377;<%= display[i].price.toLocaleString("en-IN")%> / night</p>
+   
+  </div>
+</div>
+ <% } %>
+</div>
+
 </body>
