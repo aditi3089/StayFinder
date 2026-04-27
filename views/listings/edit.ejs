@@ -1,16 +1,38 @@
 <% layout("/layouts/boilerplate") %>
-<body>
+
+    <div class="row">
+    <div class="col-8 offset-2">
     <form action="/listings/<%= item._id %>?_method=PUT" method="POST">
-        <input type="text" name="title" placeholder="Title" value="<%= item.title %>">
+        <div class="mb-3">
+        <label for="title" class="form-label">Title:</label>
+        <input type="text" name="title" placeholder="Title" value="<%= item.title %>" class="form-control">
+        </div>
         <br>
-        <input type="text" name="description" placeholder="Description" value="<%= item.description %>">
+        <div class="mb-3">
+        <label for="description" class="form-label">Description:</label>
+        <input type="text" name="description" placeholder="Description" value="<%= item.description %>" class="form-control">
+        </div>
         <br>
-        <input type="number" name="price" placeholder="Price" value="<%= item.price %>">
+        <div class="mb-3">
+        <label for="price" class="form-label">Price:</label>
+        <input type="number" name="price" placeholder="Price" value="<%= item.price %>" class="form-control">
+        </div>
         <br>
-        <input type="text" name="location" placeholder="Location" value="<%= item.location %>">
+        <div class="row">
+            <div class="col-md-4">
+        <label for="location" class="form-label">Location:</label>
+        <input type="text" name="location" placeholder="Location" value="<%= item.location %>" class="form-control">
         <br>
-        <input type="text" name="country" placeholder="Country" value="<%= item.country %>">
+            </div>
+        <div class="col-md-8">
+        <label for="country" class="form-label">Country:</label>
+        <input type="text" name="country" placeholder="Country" value="<%= item.country %>" class="form-control">
         <br>
-        <button type="submit">Update Listing</button>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+        <button type="submit" class="btn btn-dark add-btn">Update</button>
+        </div></div>
     </form>
-</body>
+    </div>
+    </div>

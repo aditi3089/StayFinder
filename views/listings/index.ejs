@@ -8,14 +8,17 @@
     <!-- card -->
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
 <% for(let i = 0; i < display.length; i++) { %>
-<div class="card col" style="width: 20rem;">
-  <img src="<%= display[i].image.url %>" class="card-img-top" alt="listing_image">
+   <a href="/listings/<%= display[i]._id %>" style="text-decoration: none; color: black;"> 
+ <div class="card col" >
+  <img src="<%= display[i].image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;" >
+  <div class="card-img-overlay"></div>
   <div class="card-body">
-    <h5 class="card-title"><%= display[i].title %></h5>
+    <p class="card-title"><b><%= display[i].title %></b></p>
     <p class="card-price">&#8377;<%= display[i].price.toLocaleString("en-IN")%> / night</p>
    
   </div>
-</div>
+ </div>
+  </a> 
  <% } %>
 </div>
 
