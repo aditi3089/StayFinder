@@ -1,19 +1,23 @@
 <% layout("/layouts/boilerplate") %>
-<body>
 
-    <h1><%= item.title %></h1>
-    <p><%= item.description %></p>
-    <p>Price: &#8377;<%= item.price.toLocaleString("en-IN") %></p>
-    <p>Location: <%= item.location %></p>
-    <p>Country: <%= item.country %></p>
+<div class="row">
+    <div class="col-10 offset-1">
+        <br>
+        <h3><%= item.title %></h3>
+        
+        <img src="<%=item.image.url%>" class="show-img mt-2" alt="photo of stay">
+     
+        <div class="show-details">
 
-    <br>
-    <form action="/listings/<%= item._id %>/edit" method="GET">
-        <button type="submit">EDIT</button>
-    </form>
-    <br><br>
-    <form action="/listings/<%= item._id %>?_method=DELETE" method="POST">
-        <button type="submit">DELETE</button>
-    </form>
-
-</body>
+            <p><%= item.description %></p>
+            <p><b>&#8377;<%= item.price.toLocaleString("en-IN") %> / night</b></p>
+            <p><i class="fa-solid fa-location-dot" ></i> <%= item.location %>, <%= item.country %></p>
+            <form action="/listings/<%= item._id %>/edit" method="GET" style="display:inline;" >
+                <button type="submit" class="btn btn-dark add-btn col-1 m-1">Edit</button>
+            </form>
+            <form action="/listings/<%= item._id %>?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-dark col-1 m-1">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
