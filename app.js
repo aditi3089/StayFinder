@@ -5,6 +5,8 @@ const Listing=require("./models/listing");
 const methodOverride= require("method-override");
 const engine= require("ejs-mate");
 const path= require("path");
+const wrapAsync= require("./utils/wrapAsync");
+const ExpressError= require("./utils/ExpressError");
 
 app.engine("ejs", engine);
 
@@ -29,44 +31,48 @@ app.get("/", (req,res)=>{
 });
 
 
-app.get("/listings", async (req,res)=>{
+app.get("/listings", wrapAsync(async (req,res)=>{
     const display= await Listing.find({});
     res.render("listings/index", {display});
-});
+}));
 
-app.get("/listings/new", async(req,res)=>{
+app.get("/listings/new", wrapAsync(async(req,res)=>{
     res.render("listings/new.ejs");
-});
+}));
 
-app.get("/listings/:id", async (req, res)=>{
+app.get("/listings/:id", wrapAsync(async (req, res)=>{
     let {id}= req.params;
     const item= await Listing.findById(id);
     res.render("listings/show.ejs", {item});
-});
+}));
 
-app.post("/listings", async (req,res)=>{
+app.post("/listings", wrapAsync (async (req,res,next)=>{
+    if(!req.body.title || !req.body.price || !req.body.location || !req.body.country){ 
+        throw new ExpressError(400, "Enter valid data for listing");
+    }
     const newListing= new Listing(req.body);
     await newListing.save();
     res.redirect("/listings");
-});
+   
+}));    
 
-app.get("/listings/:id/edit", async (req,res)=>{
+app.get("/listings/:id/edit", wrapAsync(async (req,res)=>{
     let {id}= req.params;
     const item= await Listing.findById(id);
     res.render("listings/edit", {item});
-});
+}));
 
-app.put("/listings/:id", async (req,res)=>{
+app.put("/listings/:id", wrapAsync(async (req,res)=>{
     let {id}= req.params;
     await Listing.findByIdAndUpdate(id, req.body);
     res.redirect("/listings");
-});
+}));
 
-app.delete("/listings/:id", async (req,res)=>{
+app.delete("/listings/:id", wrapAsync(async (req,res)=>{
     let {id}= req.params;
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
-});
+}));
 
 // app.get("/testlistings", async (req,res)=>{
 //  let list1= new Listing({
@@ -81,7 +87,14 @@ app.delete("/listings/:id", async (req,res)=>{
 //  console.log("Listing created");
 //     res.send("Listing created");
 // });
+app.use((req, res, next) => {
+    next(new ExpressError(404, "Page Not Found"));
+});
+app.use((err, req, res, next)=>{
 
+    const {status=500, message="Something went wrong"}= err;
+    res.status(status).send(message);
+})
 app.listen(8080, ()=>{
     console.log("Server is running on port 8080");
 });
