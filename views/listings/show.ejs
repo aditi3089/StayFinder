@@ -42,12 +42,20 @@
             <hr>
         <h4>Reviews</h4>
         <% for(let review of item.reviews) { %>
-            <div class="card mb-3">
+            <div class="card mb-3 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Rating: <%= review.rating %> / 5 </h5>
-                    <p class="card-text"><%= review.comment %></p>
-                    </div>
-                    </div>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <% for(let i = 1; i <= 5; i++) { %>
+                            <span style="color: <%= i <= review.rating ? '#fe424d' : '#ccc' %>">&#9733;</span>
+                        <% } %>
+                        <span class="ms-1"><%= review.rating %>/5</span>
+                    </h6>
+                    <p class="card-text mt-2"><%= review.comment %></p>
+                    <form action="/listings/<%= item._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-dark ">Delete</button>
+                    </form>
+                </div>
+            </div>
         <% } %>
        
 

@@ -71,11 +71,10 @@ app.get("/listings/:id", wrapAsync(async (req, res)=>{
 
 //create route
 app.post("/listings", validateListing, wrapAsync(async (req,res)=>{
-    
-    const newListing= new Listing({
-        ...req.body.listing,
-        image: { url: req.body.listing.image }
-    });
+    const newListing= new Listing(req.body.listing);
+    if(req.body.listing.image && req.body.listing.image !== ""){
+        newListing.image.url = req.body.listing.image;
+    }
     await newListing.save();
     res.redirect("/listings");
 }));    
@@ -111,6 +110,14 @@ app.post("/listings/:id/reviews", validateReview,wrapAsync(async (req,res)=>{
     await review.save();
     await item.save();
     res.redirect(`/listings/${req.params.id}`);
+}));
+
+//review delete
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req,res)=>{
+    const {id, reviewId}= req.params;
+    await Listing.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
 }));
 
 
