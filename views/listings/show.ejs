@@ -20,4 +20,23 @@
             </form>
         </div>
     </div>
+    <hr>
+    <div class="col-8 offset-1">
+        <h4 >Leave Review</h4>
+        <form action="/listings/<%= item._id %>/reviews" method="POST" novalidate class="needs-validation">
+             <div class="mb-3">
+                <label for="rating" class="form-label">Rating:</label>
+                <input type="number" name="review[rating]" placeholder="Rating (1-5)" min="1" max="5" class="form-control" required>
+                <div class="invalid-feedback">Please enter a rating between 1 and 5.</div>
+            </div>
+            <br>
+            <div class="mb-3">
+                <label for="comment" class="form-label">Comment:</label>
+                <input type="text" name="review[body]" placeholder="Write your review here" class="form-control" required>
+                <div class="invalid-feedback">Please enter a review.</div>
+            </div>
+            <br>
+            
+            <button type="submit" class="btn btn-dark add-btn col-1 m-1">Submit</button>
+    </div>
 </div>

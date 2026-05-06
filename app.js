@@ -8,6 +8,7 @@ const path= require("path");
 const wrapAsync= require("./utils/wrapAsync");
 const ExpressError= require("./utils/ExpressError");
 const listingSchema= require("./schema");
+const Review= require("./models/review");
 
 app.engine("ejs", engine);
 
@@ -89,6 +90,18 @@ app.delete("/listings/:id", wrapAsync(async (req,res)=>{
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+
+//review post
+app.post("/listings/:id/reviews", wrapAsync(async (req,res)=>{
+    
+    const item= await Listing.findById(req.params.id);
+    const review= new Review(req.body.review);
+    item.reviews.push(review);
+    await review.save();
+    await item.save();
+    res.redirect(`/listings/${req.params.id}`);
+}));
+
 
 // app.get("/testlistings", async (req,res)=>{
 //  let list1= new Listing({
