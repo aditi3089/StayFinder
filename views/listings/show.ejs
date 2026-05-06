@@ -32,11 +32,24 @@
             <br>
             <div class="mb-3">
                 <label for="comment" class="form-label">Comment:</label>
-                <input type="text" name="review[body]" placeholder="Write your review here" class="form-control" required>
+               <textarea name="review[comment]" id="" class="form-control" required></textarea>
                 <div class="invalid-feedback">Please enter a review.</div>
             </div>
             <br>
             
             <button type="submit" class="btn btn-dark add-btn col-1 m-1">Submit</button>
+        </form>
+            <hr>
+        <h4>Reviews</h4>
+        <% for(let review of item.reviews) { %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Rating: <%= review.rating %> / 5 </h5>
+                    <p class="card-text"><%= review.comment %></p>
+                    </div>
+                    </div>
+        <% } %>
+       
+
     </div>
 </div>

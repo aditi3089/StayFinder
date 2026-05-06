@@ -7,7 +7,7 @@ const engine= require("ejs-mate");
 const path= require("path");
 const wrapAsync= require("./utils/wrapAsync");
 const ExpressError= require("./utils/ExpressError");
-const listingSchema= require("./schema");
+const {listingSchema, reviewSchema}= require("./schema");
 const Review= require("./models/review");
 
 app.engine("ejs", engine);
@@ -35,6 +35,17 @@ const validateListing= (req,res,next)=>{
     next();
 }
 
+//review validation middleware
+const validateReview= (req,res,next)=>{
+
+    let {error}=reviewSchema.validate(req.body);
+    if(error){
+        let errMsg= error.details.map(el => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    }
+    next();
+}
+
 async function main(){
  await mongoose.connect(mongo_url);
 }
@@ -54,7 +65,7 @@ app.get("/listings/new", wrapAsync(async(req,res)=>{
 
 app.get("/listings/:id", wrapAsync(async (req, res)=>{
     let {id}= req.params;
-    const item= await Listing.findById(id);
+    const item= await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs", {item});
 }));
 
@@ -92,7 +103,7 @@ app.delete("/listings/:id", wrapAsync(async (req,res)=>{
 }));
 
 //review post
-app.post("/listings/:id/reviews", wrapAsync(async (req,res)=>{
+app.post("/listings/:id/reviews", validateReview,wrapAsync(async (req,res)=>{
     
     const item= await Listing.findById(req.params.id);
     const review= new Review(req.body.review);
